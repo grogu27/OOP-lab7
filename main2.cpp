@@ -1,4 +1,7 @@
 #include <iostream>
+#include <stdexcept>
+
+using namespace std;
 
 template <class T>
 class List {
@@ -29,7 +32,7 @@ public:
 	}
 
 	T get_back() {
-		if (!elements) return NULL;
+		if (!elements) return -1;
 		List* node = this;
 		List* parent = nullptr;
 		while (node->next != nullptr) {
@@ -71,22 +74,22 @@ public:
 	}
 	
 	void print() {
-		if (!elements) {
-			std::cout << "Stack is Empty!" << std::endl;
+		if (this->elements == 0) {
+			cout << "Stack is Empty!" << endl;
 			return;
 		}
 		T value = data;
 		List* node = this;
 		for (int i = 0; i < elements; i++) {
-			std::cout << value << " ";
+			cout << value << " ";
 			node = node->next;
 			if (node == nullptr) {
-				std::cout << "\n";
+				cout << "\n";
 				return;
 			}
 			value = node->data;
 		}
-		std::cout << "\n";
+		cout << "\n";
 	}
 
 	~List() {
@@ -108,11 +111,13 @@ public:
 		count++;
 	};
 	T getTop() {
-		if (!this->elements) throw std::exception("Stack is EMPTY!");
+		if (this->elements == 0) 
+			throw runtime_error("Stack is EMPTY!");
 		return List<T>::get_back();
 	};
 	T pop() {
-		if (!this->elements) throw std::exception("Stack is EMPTY!");
+		if (this->elements == 0) 
+			throw runtime_error("Stack is EMPTY!");
 		T result = this->get_back();
 		this->pop_back();
 		count--;
@@ -133,13 +138,15 @@ public:
 		List<T>::add(data);
 	};
 	T dequeue() {
-		if (!this->elements) throw std::exception("Stack is EMPTY!");
+		if (this->elements == 0) 
+			throw runtime_error("Queue is EMPTY!");
 		T result = this->data;
 		this->pop_front();
 		return result;
 	}
 	T getFirst() {
-		if (!this->elements) throw std::exception("Stack is EMPTY!");
+		if (this->elements == 0) 
+			throw runtime_error("Queue is EMPTY!");
 		return this->data;
 	};
 };
@@ -148,31 +155,46 @@ template <class T>
 int Stack<T>::count = 0;
 
 int main() {
-	std::cout << "> Stack" << std::endl;
+	cout << "> Stack" << endl;
 	Stack<float> stack(5);
 	stack.push(6);
 	stack.push(1);
 	stack.push(3);
 	stack.push(5);
 	stack.push(0);
-	std::cout << "stack pop: " << stack.pop() << std::endl;
-	std::cout << "stack pop: " << stack.pop() << std::endl;
+
+    stack.print();
+    cout << "Top: " << stack.getTop() << endl;
+	cout << "Elements: " << stack.GetElements() << endl;
+    cout << endl;
+
+	cout << "stack pop: " << stack.pop() << endl;
+	cout << "stack pop: " << stack.pop() << endl;
+    cout << endl;
 	stack.print();
 
-	std::cout << "Top: " << stack.getTop() << std::endl;
-	std::cout << "Elements: " << stack.GetElements() << std::endl;
-	std::cout << "\n> Queue" << std::endl;
-	Queue<float> queue(5);
-	queue.enqueue(6);
-	queue.enqueue(1);
-	queue.enqueue(3);
-	queue.enqueue(5);
-	queue.enqueue(0);
-	std::cout << "queue dequeue: " << queue.dequeue() << std::endl;
-	std::cout << "queue dequeue: " << queue.dequeue() << std::endl;
+	cout << "Top: " << stack.getTop() << endl;
+	cout << "Elements: " << stack.GetElements() << endl;
+	cout << "\n> Queue" << endl;
+
+	Queue<string> queue("q");
+	queue.enqueue("w");
+	queue.enqueue("e");
+	queue.enqueue("r");
+	queue.enqueue("t");
+	queue.enqueue("y");
+
+    queue.print();
+    cout << "First: " << queue.getFirst() << endl;
+	cout << "Elements: " << queue.GetElements() << endl;
+    cout << endl;
+
+	//cout << "queue dequeue: " << queue.dequeue() << endl;
+	cout << "queue dequeue: " << queue.dequeue() << endl;
+    cout << endl;
 	queue.print();
 
-	std::cout << "First: " << queue.getFirst() << std::endl;
-	std::cout << "Elements: " << queue.GetElements() << std::endl;
+	cout << "First: " << queue.getFirst() << endl;
+	cout << "Elements: " << queue.GetElements() << endl;
 	return 0;
 }
